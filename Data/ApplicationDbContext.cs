@@ -13,5 +13,11 @@ namespace EarthquakeHorses4.Data
             : base(options)
         {
         }
+
+        public DbSet<EarthquakeHorses4.Models.Cheval> Cheval { get; set; }
+
+        public DbSet<EarthquakeHorses4.Models.Contrat> Contrat { get; set; }
+
+        public DbSet<EarthquakeHorses4.Models.Cour> Cour { get; set; }
     }
 }
