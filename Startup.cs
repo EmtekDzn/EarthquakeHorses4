@@ -83,8 +83,6 @@ namespace EarthquakeHorses4
                 options.SlidingExpiration = true;
             });
 
-            services.AddDbContext<ApplicationContext>(options =>
-                    options.UseSqlServer(Configuration.GetConnectionString("ApplicationContext")));
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.

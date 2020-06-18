@@ -36,5 +36,7 @@ namespace EarthquakeHorses4.Data
         public DbSet<EarthquakeHorses4.Models.Pension> Pension { get; set; }
 
         public DbSet<EarthquakeHorses4.Models.Sceance> Sceance { get; set; }
+
+        public DbSet<EarthquakeHorses4.Models.SceanceUser> SceanceUser { get; set; }
     }
 }

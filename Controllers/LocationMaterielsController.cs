@@ -12,9 +12,9 @@ namespace EarthquakeHorses4.Controllers
 {
     public class LocationMaterielsController : Controller
     {
-        private readonly ApplicationContext _context;
+        private readonly ApplicationDbContext _context;
 
-        public LocationMaterielsController(ApplicationContext context)
+        public LocationMaterielsController(ApplicationDbContext context)
         {
             _context = context;
         }
@@ -22,8 +22,8 @@ namespace EarthquakeHorses4.Controllers
         // GET: LocationMateriels
         public async Task<IActionResult> Index()
         {
-            var applicationContext = _context.LocationMateriel.Include(l => l.Contrat).Include(l => l.Materiel);
-            return View(await applicationContext.ToListAsync());
+            var applicationDbContext = _context.LocationMateriel.Include(l => l.Contrat).Include(l => l.Materiel);
+            return View(await applicationDbContext.ToListAsync());
         }
 
         // GET: LocationMateriels/Details/5
@@ -50,7 +50,7 @@ namespace EarthquakeHorses4.Controllers
         public IActionResult Create()
         {
             ViewData["ContratId"] = new SelectList(_context.Contrat, "Id", "Id");
-            ViewData["MaterielId"] = new SelectList(_context.Set<Materiel>(), "Id", "Id");
+            ViewData["MaterielId"] = new SelectList(_context.Materiel, "Id", "Id");
             return View();
         }
 
@@ -68,7 +68,7 @@ namespace EarthquakeHorses4.Controllers
                 return RedirectToAction(nameof(Index));
             }
             ViewData["ContratId"] = new SelectList(_context.Contrat, "Id", "Id", locationMateriel.ContratId);
-            ViewData["MaterielId"] = new SelectList(_context.Set<Materiel>(), "Id", "Id", locationMateriel.MaterielId);
+            ViewData["MaterielId"] = new SelectList(_context.Materiel, "Id", "Id", locationMateriel.MaterielId);
             return View(locationMateriel);
         }
 
@@ -86,7 +86,7 @@ namespace EarthquakeHorses4.Controllers
                 return NotFound();
             }
             ViewData["ContratId"] = new SelectList(_context.Contrat, "Id", "Id", locationMateriel.ContratId);
-            ViewData["MaterielId"] = new SelectList(_context.Set<Materiel>(), "Id", "Id", locationMateriel.MaterielId);
+            ViewData["MaterielId"] = new SelectList(_context.Materiel, "Id", "Id", locationMateriel.MaterielId);
             return View(locationMateriel);
         }
 
@@ -123,7 +123,7 @@ namespace EarthquakeHorses4.Controllers
                 return RedirectToAction(nameof(Index));
             }
             ViewData["ContratId"] = new SelectList(_context.Contrat, "Id", "Id", locationMateriel.ContratId);
-            ViewData["MaterielId"] = new SelectList(_context.Set<Materiel>(), "Id", "Id", locationMateriel.MaterielId);
+            ViewData["MaterielId"] = new SelectList(_context.Materiel, "Id", "Id", locationMateriel.MaterielId);
             return View(locationMateriel);
         }
 

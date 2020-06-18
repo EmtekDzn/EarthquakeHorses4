@@ -12,9 +12,9 @@ namespace EarthquakeHorses4.Controllers
 {
     public class SceancesController : Controller
     {
-        private readonly ApplicationContext _context;
+        private readonly ApplicationDbContext _context;
 
-        public SceancesController(ApplicationContext context)
+        public SceancesController(ApplicationDbContext context)
         {
             _context = context;
         }
@@ -22,8 +22,8 @@ namespace EarthquakeHorses4.Controllers
         // GET: Sceances
         public async Task<IActionResult> Index()
         {
-            var applicationContext = _context.Sceance.Include(s => s.Contrat).Include(s => s.Cour).Include(s => s.Lieu);
-            return View(await applicationContext.ToListAsync());
+            var applicationDbContext = _context.Sceance.Include(s => s.Contrat).Include(s => s.Cour).Include(s => s.Lieu);
+            return View(await applicationDbContext.ToListAsync());
         }
 
         // GET: Sceances/Details/5

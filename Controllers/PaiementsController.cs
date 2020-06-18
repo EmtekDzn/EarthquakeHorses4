@@ -12,9 +12,9 @@ namespace EarthquakeHorses4.Controllers
 {
     public class PaiementsController : Controller
     {
-        private readonly ApplicationContext _context;
+        private readonly ApplicationDbContext _context;
 
-        public PaiementsController(ApplicationContext context)
+        public PaiementsController(ApplicationDbContext context)
         {
             _context = context;
         }
@@ -22,8 +22,8 @@ namespace EarthquakeHorses4.Controllers
         // GET: Paiements
         public async Task<IActionResult> Index()
         {
-            var applicationContext = _context.Paiement.Include(p => p.Contrat);
-            return View(await applicationContext.ToListAsync());
+            var applicationDbContext = _context.Paiement.Include(p => p.Contrat);
+            return View(await applicationDbContext.ToListAsync());
         }
 
         // GET: Paiements/Details/5
