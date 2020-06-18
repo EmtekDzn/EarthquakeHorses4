@@ -10,22 +10,23 @@ using EarthquakeHorses4.Models;
 
 namespace EarthquakeHorses4.Controllers
 {
-    public class ContratsController : Controller
+    public class SceancesController : Controller
     {
         private readonly ApplicationContext _context;
 
-        public ContratsController(ApplicationContext context)
+        public SceancesController(ApplicationContext context)
         {
             _context = context;
         }
 
-        // GET: Contrats
+        // GET: Sceances
         public async Task<IActionResult> Index()
         {
-            return View(await _context.Contrat.ToListAsync());
+            var applicationContext = _context.Sceance.Include(s => s.Contrat).Include(s => s.Cour).Include(s => s.Lieu);
+            return View(await applicationContext.ToListAsync());
         }
 
-        // GET: Contrats/Details/5
+        // GET: Sceances/Details/5
         public async Task<IActionResult> Details(int? id)
         {
             if (id == null)
@@ -33,39 +34,48 @@ namespace EarthquakeHorses4.Controllers
                 return NotFound();
             }
 
-            var contrat = await _context.Contrat
+            var sceance = await _context.Sceance
+                .Include(s => s.Contrat)
+                .Include(s => s.Cour)
+                .Include(s => s.Lieu)
                 .FirstOrDefaultAsync(m => m.Id == id);
-            if (contrat == null)
+            if (sceance == null)
             {
                 return NotFound();
             }
 
-            return View(contrat);
+            return View(sceance);
         }
 
-        // GET: Contrats/Create
+        // GET: Sceances/Create
         public IActionResult Create()
         {
+            ViewData["ContratId"] = new SelectList(_context.Contrat, "Id", "Id");
+            ViewData["CourId"] = new SelectList(_context.Cour, "Id", "Id");
+            ViewData["LieuId"] = new SelectList(_context.Lieu, "Id", "Id");
             return View();
         }
 
-        // POST: Contrats/Create
+        // POST: Sceances/Create
         // To protect from overposting attacks, enable the specific properties you want to bind to, for 
         // more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Create([Bind("Id,Titre,Description")] Contrat contrat)
+        public async Task<IActionResult> Create([Bind("Id,Numero,ContratId,CourId,LieuId")] Sceance sceance)
         {
             if (ModelState.IsValid)
             {
-                _context.Add(contrat);
+                _context.Add(sceance);
                 await _context.SaveChangesAsync();
                 return RedirectToAction(nameof(Index));
             }
-            return View(contrat);
+            ViewData["ContratId"] = new SelectList(_context.Contrat, "Id", "Id", sceance.ContratId);
+            ViewData["CourId"] = new SelectList(_context.Cour, "Id", "Id", sceance.CourId);
+            ViewData["LieuId"] = new SelectList(_context.Lieu, "Id", "Id", sceance.LieuId);
+            return View(sceance);
         }
 
-        // GET: Contrats/Edit/5
+        // GET: Sceances/Edit/5
         public async Task<IActionResult> Edit(int? id)
         {
             if (id == null)
@@ -73,22 +83,25 @@ namespace EarthquakeHorses4.Controllers
                 return NotFound();
             }
 
-            var contrat = await _context.Contrat.FindAsync(id);
-            if (contrat == null)
+            var sceance = await _context.Sceance.FindAsync(id);
+            if (sceance == null)
             {
                 return NotFound();
             }
-            return View(contrat);
+            ViewData["ContratId"] = new SelectList(_context.Contrat, "Id", "Id", sceance.ContratId);
+            ViewData["CourId"] = new SelectList(_context.Cour, "Id", "Id", sceance.CourId);
+            ViewData["LieuId"] = new SelectList(_context.Lieu, "Id", "Id", sceance.LieuId);
+            return View(sceance);
         }
 
-        // POST: Contrats/Edit/5
+        // POST: Sceances/Edit/5
         // To protect from overposting attacks, enable the specific properties you want to bind to, for 
         // more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Edit(int id, [Bind("Id,Titre,Description")] Contrat contrat)
+        public async Task<IActionResult> Edit(int id, [Bind("Id,Numero,ContratId,CourId,LieuId")] Sceance sceance)
         {
-            if (id != contrat.Id)
+            if (id != sceance.Id)
             {
                 return NotFound();
             }
@@ -97,12 +110,12 @@ namespace EarthquakeHorses4.Controllers
             {
                 try
                 {
-                    _context.Update(contrat);
+                    _context.Update(sceance);
                     await _context.SaveChangesAsync();
                 }
                 catch (DbUpdateConcurrencyException)
                 {
-                    if (!ContratExists(contrat.Id))
+                    if (!SceanceExists(sceance.Id))
                     {
                         return NotFound();
                     }
@@ -113,10 +126,13 @@ namespace EarthquakeHorses4.Controllers
                 }
                 return RedirectToAction(nameof(Index));
             }
-            return View(contrat);
+            ViewData["ContratId"] = new SelectList(_context.Contrat, "Id", "Id", sceance.ContratId);
+            ViewData["CourId"] = new SelectList(_context.Cour, "Id", "Id", sceance.CourId);
+            ViewData["LieuId"] = new SelectList(_context.Lieu, "Id", "Id", sceance.LieuId);
+            return View(sceance);
         }
 
-        // GET: Contrats/Delete/5
+        // GET: Sceances/Delete/5
         public async Task<IActionResult> Delete(int? id)
         {
             if (id == null)
@@ -124,30 +140,33 @@ namespace EarthquakeHorses4.Controllers
                 return NotFound();
             }
 
-            var contrat = await _context.Contrat
+            var sceance = await _context.Sceance
+                .Include(s => s.Contrat)
+                .Include(s => s.Cour)
+                .Include(s => s.Lieu)
                 .FirstOrDefaultAsync(m => m.Id == id);
-            if (contrat == null)
+            if (sceance == null)
             {
                 return NotFound();
             }
 
-            return View(contrat);
+            return View(sceance);
         }
 
-        // POST: Contrats/Delete/5
+        // POST: Sceances/Delete/5
         [HttpPost, ActionName("Delete")]
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> DeleteConfirmed(int id)
         {
-            var contrat = await _context.Contrat.FindAsync(id);
-            _context.Contrat.Remove(contrat);
+            var sceance = await _context.Sceance.FindAsync(id);
+            _context.Sceance.Remove(sceance);
             await _context.SaveChangesAsync();
             return RedirectToAction(nameof(Index));
         }
 
-        private bool ContratExists(int id)
+        private bool SceanceExists(int id)
         {
-            return _context.Contrat.Any(e => e.Id == id);
+            return _context.Sceance.Any(e => e.Id == id);
         }
     }
 }

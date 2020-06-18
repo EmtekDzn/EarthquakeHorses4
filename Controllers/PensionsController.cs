@@ -10,22 +10,23 @@ using EarthquakeHorses4.Models;
 
 namespace EarthquakeHorses4.Controllers
 {
-    public class ContratsController : Controller
+    public class PensionsController : Controller
     {
         private readonly ApplicationContext _context;
 
-        public ContratsController(ApplicationContext context)
+        public PensionsController(ApplicationContext context)
         {
             _context = context;
         }
 
-        // GET: Contrats
+        // GET: Pensions
         public async Task<IActionResult> Index()
         {
-            return View(await _context.Contrat.ToListAsync());
+            var applicationContext = _context.Pension.Include(p => p.Cheval).Include(p => p.Contrat);
+            return View(await applicationContext.ToListAsync());
         }
 
-        // GET: Contrats/Details/5
+        // GET: Pensions/Details/5
         public async Task<IActionResult> Details(int? id)
         {
             if (id == null)
@@ -33,39 +34,45 @@ namespace EarthquakeHorses4.Controllers
                 return NotFound();
             }
 
-            var contrat = await _context.Contrat
+            var pension = await _context.Pension
+                .Include(p => p.Cheval)
+                .Include(p => p.Contrat)
                 .FirstOrDefaultAsync(m => m.Id == id);
-            if (contrat == null)
+            if (pension == null)
             {
                 return NotFound();
             }
 
-            return View(contrat);
+            return View(pension);
         }
 
-        // GET: Contrats/Create
+        // GET: Pensions/Create
         public IActionResult Create()
         {
+            ViewData["ChevalId"] = new SelectList(_context.Cheval, "Id", "Id");
+            ViewData["ContratId"] = new SelectList(_context.Contrat, "Id", "Id");
             return View();
         }
 
-        // POST: Contrats/Create
+        // POST: Pensions/Create
         // To protect from overposting attacks, enable the specific properties you want to bind to, for 
         // more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Create([Bind("Id,Titre,Description")] Contrat contrat)
+        public async Task<IActionResult> Create([Bind("Id,Tarif,Engagement,Type,Detail,ContratId,UserId,ChevalId")] Pension pension)
         {
             if (ModelState.IsValid)
             {
-                _context.Add(contrat);
+                _context.Add(pension);
                 await _context.SaveChangesAsync();
                 return RedirectToAction(nameof(Index));
             }
-            return View(contrat);
+            ViewData["ChevalId"] = new SelectList(_context.Cheval, "Id", "Id", pension.ChevalId);
+            ViewData["ContratId"] = new SelectList(_context.Contrat, "Id", "Id", pension.ContratId);
+            return View(pension);
         }
 
-        // GET: Contrats/Edit/5
+        // GET: Pensions/Edit/5
         public async Task<IActionResult> Edit(int? id)
         {
             if (id == null)
@@ -73,22 +80,24 @@ namespace EarthquakeHorses4.Controllers
                 return NotFound();
             }
 
-            var contrat = await _context.Contrat.FindAsync(id);
-            if (contrat == null)
+            var pension = await _context.Pension.FindAsync(id);
+            if (pension == null)
             {
                 return NotFound();
             }
-            return View(contrat);
+            ViewData["ChevalId"] = new SelectList(_context.Cheval, "Id", "Id", pension.ChevalId);
+            ViewData["ContratId"] = new SelectList(_context.Contrat, "Id", "Id", pension.ContratId);
+            return View(pension);
         }
 
-        // POST: Contrats/Edit/5
+        // POST: Pensions/Edit/5
         // To protect from overposting attacks, enable the specific properties you want to bind to, for 
         // more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Edit(int id, [Bind("Id,Titre,Description")] Contrat contrat)
+        public async Task<IActionResult> Edit(int id, [Bind("Id,Tarif,Engagement,Type,Detail,ContratId,UserId,ChevalId")] Pension pension)
         {
-            if (id != contrat.Id)
+            if (id != pension.Id)
             {
                 return NotFound();
             }
@@ -97,12 +106,12 @@ namespace EarthquakeHorses4.Controllers
             {
                 try
                 {
-                    _context.Update(contrat);
+                    _context.Update(pension);
                     await _context.SaveChangesAsync();
                 }
                 catch (DbUpdateConcurrencyException)
                 {
-                    if (!ContratExists(contrat.Id))
+                    if (!PensionExists(pension.Id))
                     {
                         return NotFound();
                     }
@@ -113,10 +122,12 @@ namespace EarthquakeHorses4.Controllers
                 }
                 return RedirectToAction(nameof(Index));
             }
-            return View(contrat);
+            ViewData["ChevalId"] = new SelectList(_context.Cheval, "Id", "Id", pension.ChevalId);
+            ViewData["ContratId"] = new SelectList(_context.Contrat, "Id", "Id", pension.ContratId);
+            return View(pension);
         }
 
-        // GET: Contrats/Delete/5
+        // GET: Pensions/Delete/5
         public async Task<IActionResult> Delete(int? id)
         {
             if (id == null)
@@ -124,30 +135,32 @@ namespace EarthquakeHorses4.Controllers
                 return NotFound();
             }
 
-            var contrat = await _context.Contrat
+            var pension = await _context.Pension
+                .Include(p => p.Cheval)
+                .Include(p => p.Contrat)
                 .FirstOrDefaultAsync(m => m.Id == id);
-            if (contrat == null)
+            if (pension == null)
             {
                 return NotFound();
             }
 
-            return View(contrat);
+            return View(pension);
         }
 
-        // POST: Contrats/Delete/5
+        // POST: Pensions/Delete/5
         [HttpPost, ActionName("Delete")]
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> DeleteConfirmed(int id)
         {
-            var contrat = await _context.Contrat.FindAsync(id);
-            _context.Contrat.Remove(contrat);
+            var pension = await _context.Pension.FindAsync(id);
+            _context.Pension.Remove(pension);
             await _context.SaveChangesAsync();
             return RedirectToAction(nameof(Index));
         }
 
-        private bool ContratExists(int id)
+        private bool PensionExists(int id)
         {
-            return _context.Contrat.Any(e => e.Id == id);
+            return _context.Pension.Any(e => e.Id == id);
         }
     }
 }

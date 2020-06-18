@@ -5,14 +5,13 @@ using System.Threading.Tasks;
 
 namespace EarthquakeHorses4.Models
 {
-    public class Cheval
+    public class Licence
     {
         public int Id { get; set; }
-        public String Nom { get; set; }
-        //public DateTime Naissance { get; set; }
-        public float Taille { get; set; }
-        public String Robe { get; set; }
-        public String Photo { get; set; }
+        public int Validite { get; set; }
+        public float Tarif { get; set; }
+        public String Niveau { get; set; }
+        public String Categorie { get; set; }
         public int UserId { get; set; }
         public User User { get; set; }
     }

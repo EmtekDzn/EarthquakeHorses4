@@ -12,9 +12,9 @@ namespace EarthquakeHorses4.Controllers
 {
     public class CoursController : Controller
     {
-        private readonly ApplicationDbContext _context;
+        private readonly ApplicationContext _context;
 
-        public CoursController(ApplicationDbContext context)
+        public CoursController(ApplicationContext context)
         {
             _context = context;
         }

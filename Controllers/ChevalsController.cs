@@ -2,20 +2,19 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
-using EarthquakeHorses4.Data;
-using EarthquakeHorses4.Models;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
-
+using EarthquakeHorses4.Data;
+using EarthquakeHorses4.Models;
 
 namespace EarthquakeHorses4.Controllers
 {
     public class ChevalsController : Controller
     {
-        private readonly ApplicationDbContext _context;
+        private readonly ApplicationContext _context;
 
-        public ChevalsController(ApplicationDbContext context)
+        public ChevalsController(ApplicationContext context)
         {
             _context = context;
         }

@@ -10,22 +10,22 @@ using EarthquakeHorses4.Models;
 
 namespace EarthquakeHorses4.Controllers
 {
-    public class ContratsController : Controller
+    public class MaterielsController : Controller
     {
         private readonly ApplicationContext _context;
 
-        public ContratsController(ApplicationContext context)
+        public MaterielsController(ApplicationContext context)
         {
             _context = context;
         }
 
-        // GET: Contrats
+        // GET: Materiels
         public async Task<IActionResult> Index()
         {
-            return View(await _context.Contrat.ToListAsync());
+            return View(await _context.Materiel.ToListAsync());
         }
 
-        // GET: Contrats/Details/5
+        // GET: Materiels/Details/5
         public async Task<IActionResult> Details(int? id)
         {
             if (id == null)
@@ -33,39 +33,39 @@ namespace EarthquakeHorses4.Controllers
                 return NotFound();
             }
 
-            var contrat = await _context.Contrat
+            var materiel = await _context.Materiel
                 .FirstOrDefaultAsync(m => m.Id == id);
-            if (contrat == null)
+            if (materiel == null)
             {
                 return NotFound();
             }
 
-            return View(contrat);
+            return View(materiel);
         }
 
-        // GET: Contrats/Create
+        // GET: Materiels/Create
         public IActionResult Create()
         {
             return View();
         }
 
-        // POST: Contrats/Create
+        // POST: Materiels/Create
         // To protect from overposting attacks, enable the specific properties you want to bind to, for 
         // more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Create([Bind("Id,Titre,Description")] Contrat contrat)
+        public async Task<IActionResult> Create([Bind("Id,Reference,Tarif,Type,Taille,Unite,Couleur,UserId")] Materiel materiel)
         {
             if (ModelState.IsValid)
             {
-                _context.Add(contrat);
+                _context.Add(materiel);
                 await _context.SaveChangesAsync();
                 return RedirectToAction(nameof(Index));
             }
-            return View(contrat);
+            return View(materiel);
         }
 
-        // GET: Contrats/Edit/5
+        // GET: Materiels/Edit/5
         public async Task<IActionResult> Edit(int? id)
         {
             if (id == null)
@@ -73,22 +73,22 @@ namespace EarthquakeHorses4.Controllers
                 return NotFound();
             }
 
-            var contrat = await _context.Contrat.FindAsync(id);
-            if (contrat == null)
+            var materiel = await _context.Materiel.FindAsync(id);
+            if (materiel == null)
             {
                 return NotFound();
             }
-            return View(contrat);
+            return View(materiel);
         }
 
-        // POST: Contrats/Edit/5
+        // POST: Materiels/Edit/5
         // To protect from overposting attacks, enable the specific properties you want to bind to, for 
         // more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Edit(int id, [Bind("Id,Titre,Description")] Contrat contrat)
+        public async Task<IActionResult> Edit(int id, [Bind("Id,Reference,Tarif,Type,Taille,Unite,Couleur,UserId")] Materiel materiel)
         {
-            if (id != contrat.Id)
+            if (id != materiel.Id)
             {
                 return NotFound();
             }
@@ -97,12 +97,12 @@ namespace EarthquakeHorses4.Controllers
             {
                 try
                 {
-                    _context.Update(contrat);
+                    _context.Update(materiel);
                     await _context.SaveChangesAsync();
                 }
                 catch (DbUpdateConcurrencyException)
                 {
-                    if (!ContratExists(contrat.Id))
+                    if (!MaterielExists(materiel.Id))
                     {
                         return NotFound();
                     }
@@ -113,10 +113,10 @@ namespace EarthquakeHorses4.Controllers
                 }
                 return RedirectToAction(nameof(Index));
             }
-            return View(contrat);
+            return View(materiel);
         }
 
-        // GET: Contrats/Delete/5
+        // GET: Materiels/Delete/5
         public async Task<IActionResult> Delete(int? id)
         {
             if (id == null)
@@ -124,30 +124,30 @@ namespace EarthquakeHorses4.Controllers
                 return NotFound();
             }
 
-            var contrat = await _context.Contrat
+            var materiel = await _context.Materiel
                 .FirstOrDefaultAsync(m => m.Id == id);
-            if (contrat == null)
+            if (materiel == null)
             {
                 return NotFound();
             }
 
-            return View(contrat);
+            return View(materiel);
         }
 
-        // POST: Contrats/Delete/5
+        // POST: Materiels/Delete/5
         [HttpPost, ActionName("Delete")]
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> DeleteConfirmed(int id)
         {
-            var contrat = await _context.Contrat.FindAsync(id);
-            _context.Contrat.Remove(contrat);
+            var materiel = await _context.Materiel.FindAsync(id);
+            _context.Materiel.Remove(materiel);
             await _context.SaveChangesAsync();
             return RedirectToAction(nameof(Index));
         }
 
-        private bool ContratExists(int id)
+        private bool MaterielExists(int id)
         {
-            return _context.Contrat.Any(e => e.Id == id);
+            return _context.Materiel.Any(e => e.Id == id);
         }
     }
 }

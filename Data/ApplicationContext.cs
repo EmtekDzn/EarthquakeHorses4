@@ -1,19 +1,18 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Text;
-using EarthquakeHorses4.Models;
-using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
+using System.Linq;
+using System.Threading.Tasks;
 using Microsoft.EntityFrameworkCore;
+using EarthquakeHorses4.Models;
 
 namespace EarthquakeHorses4.Data
 {
-    public class ApplicationDbContext : IdentityDbContext<User>
+    public class ApplicationContext : DbContext
     {
-        public ApplicationDbContext(DbContextOptions<ApplicationDbContext> options)
+        public ApplicationContext (DbContextOptions<ApplicationContext> options)
             : base(options)
         {
         }
-
 
         public DbSet<EarthquakeHorses4.Models.Cheval> Cheval { get; set; }
 
@@ -36,5 +35,7 @@ namespace EarthquakeHorses4.Data
         public DbSet<EarthquakeHorses4.Models.Pension> Pension { get; set; }
 
         public DbSet<EarthquakeHorses4.Models.Sceance> Sceance { get; set; }
+
+        public DbSet<EarthquakeHorses4.Models.SceanceUser> SceanceUser { get; set; }
     }
 }
