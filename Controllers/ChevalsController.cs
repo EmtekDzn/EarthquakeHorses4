@@ -7,9 +7,11 @@ using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
 using EarthquakeHorses4.Data;
 using EarthquakeHorses4.Models;
+using Microsoft.AspNetCore.Authorization;
 
 namespace EarthquakeHorses4.Controllers
 {
+    [Authorize(Roles = "Gerant,Palefrenier")]
     public class ChevalsController : Controller
     {
         private readonly ApplicationDbContext _context;
@@ -20,12 +22,14 @@ namespace EarthquakeHorses4.Controllers
         }
 
         // GET: Chevals
+        [Authorize(Roles = "Gerant,Palefrenier,Secretaire")]
         public async Task<IActionResult> Index()
         {
             return View(await _context.Cheval.ToListAsync());
         }
 
         // GET: Chevals/Details/5
+        [Authorize(Roles = "Gerant,Palefrenier,Secretaire")]
         public async Task<IActionResult> Details(int? id)
         {
             if (id == null)

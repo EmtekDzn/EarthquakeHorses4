@@ -7,9 +7,11 @@ using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
 using EarthquakeHorses4.Data;
 using EarthquakeHorses4.Models;
+using Microsoft.AspNetCore.Authorization;
 
 namespace EarthquakeHorses4.Controllers
 {
+    [Authorize(Roles = "Gerant,Secretaire")]
     public class MaterielsController : Controller
     {
         private readonly ApplicationDbContext _context;

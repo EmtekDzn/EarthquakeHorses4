@@ -51,6 +51,25 @@ namespace EarthquakeHorses4.Data
                     await userManager.AddToRoleAsync(secretaire, "Secretaire");
                 }
             }
+
+            if (await userManager.FindByEmailAsync("palefrenier@ecurie.fr") == null)
+            {
+                User palefrenier = new User
+                {
+                    UserName = "palefrenier@ecurie.fr",
+                    Email = "palefrenier@ecurie.fr",
+                    Nom = "Pale",
+                    Prenom = "Frenier",
+                    Description = "Palefrenier"
+                };
+
+                IdentityResult result = await userManager.CreateAsync(palefrenier, "Azertyuiop-1");
+
+                if (result.Succeeded)
+                {
+                    await userManager.AddToRoleAsync(palefrenier, "Palefrenier");
+                }
+            }
         }
         public static void SeedRoles(RoleManager<IdentityRole> roleManager)
         {
