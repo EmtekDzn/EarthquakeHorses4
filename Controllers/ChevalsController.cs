@@ -11,7 +11,7 @@ using Microsoft.AspNetCore.Authorization;
 
 namespace EarthquakeHorses4.Controllers
 {
-    [Authorize(Roles = "Gerant,Palefrenier")]
+    [Authorize(Roles = "Gerant,Palefrenier,Secretaire")]
     public class ChevalsController : Controller
     {
         private readonly ApplicationDbContext _context;
@@ -48,6 +48,7 @@ namespace EarthquakeHorses4.Controllers
         }
 
         // GET: Chevals/Create
+        [Authorize(Roles = "Gerant,Palefrenier")]
         public IActionResult Create()
         {
             return View();
@@ -58,6 +59,7 @@ namespace EarthquakeHorses4.Controllers
         // more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
+        [Authorize(Roles = "Gerant,Palefrenier")]
         public async Task<IActionResult> Create([Bind("Id,Nom,Taille,Robe,Photo,UserId")] Cheval cheval)
         {
             if (ModelState.IsValid)
@@ -70,6 +72,7 @@ namespace EarthquakeHorses4.Controllers
         }
 
         // GET: Chevals/Edit/5
+        [Authorize(Roles = "Gerant,Palefrenier")]
         public async Task<IActionResult> Edit(int? id)
         {
             if (id == null)
@@ -90,6 +93,7 @@ namespace EarthquakeHorses4.Controllers
         // more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
+        [Authorize(Roles = "Gerant,Palefrenier")]
         public async Task<IActionResult> Edit(int id, [Bind("Id,Nom,Taille,Robe,Photo,UserId")] Cheval cheval)
         {
             if (id != cheval.Id)
@@ -121,6 +125,7 @@ namespace EarthquakeHorses4.Controllers
         }
 
         // GET: Chevals/Delete/5
+        [Authorize(Roles = "Gerant,Palefrenier")]
         public async Task<IActionResult> Delete(int? id)
         {
             if (id == null)
@@ -141,6 +146,7 @@ namespace EarthquakeHorses4.Controllers
         // POST: Chevals/Delete/5
         [HttpPost, ActionName("Delete")]
         [ValidateAntiForgeryToken]
+        [Authorize(Roles = "Gerant,Palefrenier")]
         public async Task<IActionResult> DeleteConfirmed(int id)
         {
             var cheval = await _context.Cheval.FindAsync(id);
